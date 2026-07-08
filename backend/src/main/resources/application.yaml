@@ -12,3 +12,8 @@ spring:
       ddl-auto: update
 
     show-sql: true
+  profiles:
+    active: dev
+ollama:
+  base-url: http://localhost:11434
+  model: qwen3:14b  
