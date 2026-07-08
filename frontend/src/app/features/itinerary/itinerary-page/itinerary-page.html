@@ -1,0 +1,89 @@
+<section class="mx-auto flex max-w-xl flex-col gap-8 p-6">
+  <h1 class="text-2xl font-semibold text-gray-900">Generar itinerario</h1>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
+      <label for="destination" class="text-sm font-medium text-gray-700">Destino</label>
+      <input
+        id="destination"
+        type="text"
+        formControlName="destination"
+        class="rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+      />
+    </div>
+
+    <div class="flex gap-4">
+      <div class="flex flex-1 flex-col gap-1">
+        <label for="startDate" class="text-sm font-medium text-gray-700">Fecha inicio</label>
+        <input
+          id="startDate"
+          type="date"
+          formControlName="startDate"
+          class="rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+        />
+      </div>
+
+      <div class="flex flex-1 flex-col gap-1">
+        <label for="endDate" class="text-sm font-medium text-gray-700">Fecha fin</label>
+        <input
+          id="endDate"
+          type="date"
+          formControlName="endDate"
+          class="rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="budget" class="text-sm font-medium text-gray-700">Presupuesto</label>
+      <input
+        id="budget"
+        type="text"
+        formControlName="budget"
+        class="rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="preferences" class="text-sm font-medium text-gray-700">Preferencias</label>
+      <textarea
+        id="preferences"
+        formControlName="preferences"
+        rows="3"
+        class="rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+      ></textarea>
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="loading()"
+      class="rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+    >
+      {{ loading() ? 'Generando…' : 'Generar itinerario' }}
+    </button>
+  </form>
+
+  @if (error()) {
+    <p class="text-sm text-red-600">{{ error() }}</p>
+  }
+
+  @if (result(); as itinerary) {
+    <div class="flex flex-col gap-4">
+      <h2 class="text-lg font-semibold text-gray-900">Resultado</h2>
+
+      @for (day of itinerary.days; track day.date) {
+        <div class="rounded-md border border-gray-200 bg-gray-50 p-4">
+          <h3 class="mb-2 font-medium text-gray-900">{{ day.date }}</h3>
+          <ul class="flex flex-col gap-1">
+            @for (activity of day.activities; track activity.description) {
+              <li class="text-gray-700">
+                <span class="font-medium">{{ activity.timeOfDay }}:</span>
+                {{ activity.description }}
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  }
+</section>
