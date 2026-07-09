@@ -1,4 +1,4 @@
-package com.roamdeck.backend.infrastructure.itinerary;
+package com.roamdeck.backend.infrastructure.itinerary.ollama;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-import com.roamdeck.backend.infrastructure.itinerary.OllamaProperties;
+import com.roamdeck.backend.infrastructure.itinerary.ollama.OllamaProperties;
 
 @SpringBootApplication
 @EnableConfigurationProperties(OllamaProperties.class)

@@ -1,8 +1,8 @@
-package com.roamdeck.backend.infrastructure.itinerary;
+package com.roamdeck.backend.infrastructure.itinerary.ollama;
 
 import java.util.List;
 
-public record OllamaItineraryPayload(
+record OllamaItineraryPayload(
     List<OllamaDayPayload> days
 ) {
 }

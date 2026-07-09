@@ -1,6 +1,6 @@
-package com.roamdeck.backend.infrastructure.itinerary;
+package com.roamdeck.backend.infrastructure.itinerary.ollama;
 
-public record OllamaOptions(
+record OllamaOptions(
     double temperature
 ) {
 }

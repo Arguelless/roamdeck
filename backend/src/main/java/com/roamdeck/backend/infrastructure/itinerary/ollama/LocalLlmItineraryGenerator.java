@@ -1,4 +1,4 @@
-package com.roamdeck.backend.infrastructure.itinerary;
+package com.roamdeck.backend.infrastructure.itinerary.ollama;
 
 import java.time.LocalDate;
 import java.util.List;

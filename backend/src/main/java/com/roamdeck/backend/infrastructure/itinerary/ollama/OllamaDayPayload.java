@@ -1,6 +1,6 @@
-package com.roamdeck.backend.infrastructure.itinerary;
+package com.roamdeck.backend.infrastructure.itinerary.ollama;
 
-public record OllamaDayPayload(
+record OllamaDayPayload(
     String date,
     java.util.List<OllamaActivityPayload> activities
 ) {
