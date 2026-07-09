@@ -25,6 +25,13 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(HttpStatus.BAD_GATEWAY, ex.getMessage());
     }
 
+    @ExceptionHandler(InvalidTripRequestException.class)
+    public ResponseEntity<ApiErrorResponse> handleInvalidTripRequest(
+            InvalidTripRequestException ex
+    ) {
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
     private ResponseEntity<ApiErrorResponse> buildErrorResponse(@NonNull HttpStatus status, String message) {
         return ResponseEntity
                 .status(status)

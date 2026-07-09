@@ -1,6 +1,7 @@
 package com.roamdeck.backend.application.services;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import com.roamdeck.backend.domain.itinerary.Activity;
 import com.roamdeck.backend.domain.itinerary.Itinerary;
 import com.roamdeck.backend.domain.itinerary.ItineraryDay;
 import com.roamdeck.backend.domain.itinerary.TripRequest;
+import com.roamdeck.backend.infrastructure.exceptions.InvalidTripRequestException;
 
 @Service
 public class ItineraryService {
@@ -37,13 +39,36 @@ public class ItineraryService {
             .filter(preference -> !preference.isEmpty())
             .toList();
 
+        LocalDate startDate = parseDate(request.startDate(), "startDate");
+        LocalDate endDate = parseDate(request.endDate(), "endDate");
+
+        if (endDate.isBefore(startDate)) {
+            throw new InvalidTripRequestException("endDate must not be before startDate");
+        }
+
         return new TripRequest(
             request.destination(),
-            LocalDate.parse(request.startDate()),
-            LocalDate.parse(request.endDate()),
-            Integer.parseInt(request.budget()),
+            startDate,
+            endDate,
+            parseBudget(request.budget()),
             preferences
         );
+    }
+
+    private LocalDate parseDate(String value, String fieldName) {
+        try {
+            return LocalDate.parse(value);
+        } catch (DateTimeParseException e) {
+            throw new InvalidTripRequestException("Invalid " + fieldName + ": '" + value + "' is not a valid date (expected yyyy-MM-dd)");
+        }
+    }
+
+    private int parseBudget(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            throw new InvalidTripRequestException("Invalid budget: '" + value + "' is not a valid number");
+        }
     }
 
     private GenerateItineraryResponse toResponse(Itinerary itinerary) {
