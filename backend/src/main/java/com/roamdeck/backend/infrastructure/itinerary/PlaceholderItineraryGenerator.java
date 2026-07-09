@@ -23,7 +23,7 @@ public class PlaceholderItineraryGenerator implements ItineraryGenerator {
     @Override
     public Itinerary generate(TripRequest tripRequest) {
         Activity activity = new Activity(
-            "MORNING",
+            "Mañana",
             "Explorar " + tripRequest.destination()
         );
 
