@@ -4,10 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
+import com.roamdeck.backend.infrastructure.itinerary.deepseek.DeepSeekProperties;
 import com.roamdeck.backend.infrastructure.itinerary.ollama.OllamaProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties(OllamaProperties.class)
+@EnableConfigurationProperties({OllamaProperties.class, DeepSeekProperties.class})
 public class BackendApplication {
 
 	public static void main(String[] args) {

@@ -17,3 +17,7 @@ spring:
 ollama:
   base-url: http://localhost:11434
   model: qwen3:14b  
+deepseek:
+  base-url: https://api.deepseek.com/beta
+  api-key: ${DEEPSEEK_API_KEY}
+  model: deepseek-v4-pro
