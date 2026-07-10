@@ -1,8 +1,8 @@
 # RoamDeck
 
-Generador de itinerarios de viaje con IA. El usuario indica destino, fechas, presupuesto y preferencias, y la aplicación devuelve un itinerario día a día.
+AI-powered travel itinerary generator. The user provides a destination, dates, budget and preferences, and the application returns a day-by-day itinerary.
 
-El proyecto está construido sobre una **arquitectura hexagonal (puertos y adaptadores)**, con especial atención a mantener el dominio aislado de la infraestructura. La generación de itinerarios se apoya en un **puerto** con tres implementaciones intercambiables por perfil de Spring: un placeholder para desarrollo, un LLM local vía Ollama y DeepSeek en la nube.
+The project is built on a **hexagonal architecture (ports and adapters)**, with a strong focus on keeping the domain isolated from infrastructure. Itinerary generation relies on a **port** with three interchangeable implementations selected by Spring profile: a placeholder for development, a local LLM via Ollama, and DeepSeek in the cloud.
 
 ## Stack
 
@@ -19,76 +19,76 @@ El proyecto está construido sobre una **arquitectura hexagonal (puertos y adapt
 - RxJS
 - Tailwind CSS 4
 
-## Arquitectura
+## Architecture
 
-El backend sigue una separación estricta en tres capas, con las dependencias apuntando siempre hacia el dominio:
+The backend follows a strict three-layer separation, with dependencies always pointing inward toward the domain:
 
 ```
 infrastructure  -->  application  -->  domain
 ```
 
-- **`domain/`** — Modelo de negocio puro (`Itinerary`, `ItineraryDay`, `Activity`, `TripRequest`). Records inmutables, sin dependencias de framework.
-- **`application/`** — Casos de uso (`ItineraryService`) y puertos (`ItineraryGenerator`). Orquesta el dominio y define qué necesita del exterior mediante interfaces.
-- **`infrastructure/`** — Adaptadores concretos: controladores REST, implementaciones de los puertos (generadores de IA), persistencia, seguridad y manejo de excepciones.
+- **`domain/`** — Pure business model (`Itinerary`, `ItineraryDay`, `Activity`, `TripRequest`). Immutable records, no framework dependencies.
+- **`application/`** — Use cases (`ItineraryService`) and ports (`ItineraryGenerator`). Orchestrates the domain and declares what it needs from the outside world through interfaces.
+- **`infrastructure/`** — Concrete adapters: REST controllers, port implementations (AI generators), persistence, security and exception handling.
 
-### Backends de IA intercambiables
+### Interchangeable AI backends
 
-El puerto `ItineraryGenerator` tiene tres implementaciones, seleccionadas por perfil de Spring:
+The `ItineraryGenerator` port has three implementations, selected by Spring profile:
 
-| Backend | Perfil | Descripción |
-|---------|--------|-------------|
-| Placeholder | `dev` | Genera un itinerario ficticio. Permite ejercitar el flujo completo sin depender de un LLM. |
-| Ollama | `local` | LLM local (por defecto `qwen3:14b`), sin coste ni clave de API. |
-| DeepSeek | `deepseek` | LLM en la nube con *tool calling* de esquema estricto (JSON Schema forzado). |
+| Backend | Profile | Description |
+|---------|---------|-------------|
+| Placeholder | `dev` | Produces a fake itinerary. Lets you exercise the full flow without depending on an LLM. |
+| Ollama | `local` | Local LLM (defaults to `qwen3:14b`), no cost or API key required. |
+| DeepSeek | `deepseek` | Cloud LLM with strict tool calling (enforced JSON Schema). |
 
-Solo debe haber un perfil de IA activo a la vez.
+Only one AI profile should be active at a time.
 
-## Cómo ejecutarlo
+## Getting started
 
-### Requisitos previos
+### Prerequisites
 - Java 21
 - Node.js + npm
-- Docker (para PostgreSQL)
+- Docker (for PostgreSQL)
 
-### 1. Base de datos
+### 1. Database
 
 ```bash
 docker compose up -d
 ```
 
-Levanta PostgreSQL 16 en el puerto `5432` (base `roamdeck`, usuario `admin`).
+Starts PostgreSQL 16 on port `5432` (database `roamdeck`, user `admin`).
 
 ### 2. Backend
 
-Desde `backend/`, elige el backend de IA mediante el perfil:
+From `backend/`, pick the AI backend through the profile:
 
 ```bash
-# Placeholder (por defecto)
+# Placeholder (default)
 ./mvnw spring-boot:run
 
-# Ollama local (requiere Ollama corriendo en localhost:11434)
+# Local Ollama (requires Ollama running on localhost:11434)
 ./mvnw spring-boot:run "-Dspring-boot.run.profiles=local"
 
-# DeepSeek (requiere la variable de entorno DEEPSEEK_API_KEY)
+# DeepSeek (requires the DEEPSEEK_API_KEY environment variable)
 ./mvnw spring-boot:run "-Dspring-boot.run.profiles=deepseek"
 ```
 
-El backend arranca en `http://localhost:8080`.
+The backend starts on `http://localhost:8080`.
 
 ### 3. Frontend
 
-Desde `frontend/`:
+From `frontend/`:
 
 ```bash
 npm install
 npm start
 ```
 
-El frontend arranca en `http://localhost:4200` y redirige las llamadas `/api` al backend mediante `proxy.conf.json`.
+The frontend starts on `http://localhost:4200` and proxies `/api` calls to the backend via `proxy.conf.json`.
 
 ## API
 
-### Generar itinerario
+### Generate itinerary
 
 ```
 POST /api/itineraries/generate
@@ -121,7 +121,7 @@ POST /api/itineraries/generate
 }
 ```
 
-Las peticiones inválidas (fechas mal formadas, presupuesto no numérico, o `endDate` anterior a `startDate`) se rechazan con una respuesta de error uniforme.
+Invalid requests (malformed dates, non-numeric budget, or `endDate` before `startDate`) are rejected with a uniform error response.
 
 ## Tests
 
@@ -130,22 +130,22 @@ cd backend
 ./mvnw test
 ```
 
-Los tests de `ItineraryService` usan un fake del puerto `ItineraryGenerator` (una lambda), sin Spring ni red, cubriendo el mapeo DTO-dominio y las reglas de validación.
+The `ItineraryService` tests use a fake of the `ItineraryGenerator` port (a lambda), with no Spring or network, covering the DTO-to-domain mapping and the validation rules.
 
-## Estructura del proyecto
+## Project structure
 
 ```
 roamdeck/
-├── backend/           # API Spring Boot (arquitectura hexagonal)
+├── backend/           # Spring Boot API (hexagonal architecture)
 │   └── src/main/java/com/roamdeck/backend/
-│       ├── domain/            # Modelo de negocio
-│       ├── application/       # Casos de uso y puertos
-│       └── infrastructure/    # Controladores, adaptadores IA, persistencia
-├── frontend/          # SPA Angular
+│       ├── domain/            # Business model
+│       ├── application/       # Use cases and ports
+│       └── infrastructure/    # Controllers, AI adapters, persistence
+├── frontend/          # Angular SPA
 │   └── src/app/features/itinerary/
 └── docker-compose.yml # PostgreSQL
 ```
 
-## Licencia
+## License
 
-Distribuido bajo la licencia MIT. Consulta el fichero [LICENSE](LICENSE) para más detalles.
+Distributed under the MIT License. See the [LICENSE](LICENSE) file for details.
