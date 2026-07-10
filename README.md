@@ -1,5 +1,7 @@
 # RoamDeck
 
+[![CI](https://github.com/Arguelless/roamdeck/actions/workflows/ci.yml/badge.svg)](https://github.com/Arguelless/roamdeck/actions/workflows/ci.yml)
+
 AI-powered travel itinerary generator. The user provides a destination, dates, budget and preferences, and the application returns a day-by-day itinerary.
 
 The project is built on a **hexagonal architecture (ports and adapters)**, with a strong focus on keeping the domain isolated from infrastructure. Itinerary generation relies on a **port** with three interchangeable implementations selected by Spring profile: a placeholder for development, a local LLM via Ollama, and DeepSeek in the cloud.
