@@ -13,22 +13,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<ApiErrorResponse> handleEmailAlreadyExists(
-            EmailAlreadyExistsException ex
-    ) {
+            EmailAlreadyExistsException ex) {
         return buildErrorResponse(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     @ExceptionHandler(ItineraryGenerationException.class)
     public ResponseEntity<ApiErrorResponse> handleItineraryGeneration(
-            ItineraryGenerationException ex
-    ) {
+            ItineraryGenerationException ex) {
         return buildErrorResponse(HttpStatus.BAD_GATEWAY, ex.getMessage());
     }
 
     @ExceptionHandler(InvalidTripRequestException.class)
     public ResponseEntity<ApiErrorResponse> handleInvalidTripRequest(
-            InvalidTripRequestException ex
-    ) {
+            InvalidTripRequestException ex) {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
@@ -36,6 +33,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(status)
                 .body(new ApiErrorResponse(Instant.now(), status.value(), message));
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ApiErrorResponse> handleInvalidCredentials(
+            InvalidCredentialsException ex) {
+        return buildErrorResponse(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 
 }

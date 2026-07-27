@@ -4,18 +4,18 @@ import com.roamdeck.backend.application.dto.RegisterUserRequest;
 import com.roamdeck.backend.domain.user.User;
 import com.roamdeck.backend.infrastructure.exceptions.EmailAlreadyExistsException;
 import com.roamdeck.backend.infrastructure.persistence.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder();
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void register(RegisterUserRequest request) {

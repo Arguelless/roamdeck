@@ -16,8 +16,12 @@ spring:
     active: dev
 ollama:
   base-url: http://localhost:11434
-  model: qwen3:14b  
+  model: qwen3:14b
 deepseek:
   base-url: https://api.deepseek.com/beta
   api-key: ${DEEPSEEK_API_KEY}
   model: deepseek-v4-pro
+
+jwt:
+  secret: ${JWT_SECRET:dev-secret-change-me-must-be-at-least-32-bytes-long}
+  expiration-minutes: 1440

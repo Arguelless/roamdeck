@@ -6,9 +6,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 
 import com.roamdeck.backend.infrastructure.itinerary.deepseek.DeepSeekProperties;
 import com.roamdeck.backend.infrastructure.itinerary.ollama.OllamaProperties;
+import com.roamdeck.backend.infrastructure.security.JwtProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties({OllamaProperties.class, DeepSeekProperties.class})
+@EnableConfigurationProperties({OllamaProperties.class, DeepSeekProperties.class, JwtProperties.class})
 public class BackendApplication {
 
 	public static void main(String[] args) {
