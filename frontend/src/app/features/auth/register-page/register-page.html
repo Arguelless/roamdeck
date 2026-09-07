@@ -1,0 +1,52 @@
+<section class="mx-auto flex max-w-sm flex-col gap-8 p-6">
+  <h1 class="text-2xl font-semibold text-gray-900">Crear cuenta</h1>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
+      <label for="email" class="text-sm font-medium text-gray-700">Email</label>
+      <input
+        id="email"
+        type="email"
+        autocomplete="email"
+        formControlName="email"
+        class="rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+      />
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <p class="text-sm text-red-600">Introduce un email válido.</p>
+      }
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="password" class="text-sm font-medium text-gray-700">Contraseña</label>
+      <input
+        id="password"
+        type="password"
+        autocomplete="new-password"
+        formControlName="password"
+        class="rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+      />
+      @if (form.controls.password.touched && form.controls.password.invalid) {
+        <p class="text-sm text-red-600">
+          La contraseña debe tener al menos {{ minimumPasswordLength }} caracteres.
+        </p>
+      }
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="loading()"
+      class="rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+    >
+      {{ loading() ? 'Creando cuenta…' : 'Crear cuenta' }}
+    </button>
+  </form>
+
+  @if (error()) {
+    <p class="text-sm text-red-600">{{ error() }}</p>
+  }
+
+  <p class="text-sm text-gray-600">
+    ¿Ya tienes cuenta?
+    <a routerLink="/login" class="font-medium text-blue-600 hover:text-blue-700">Inicia sesión</a>
+  </p>
+</section>
