@@ -2,6 +2,8 @@ package com.roamdeck.backend.infrastructure.persistence;
 
 import com.roamdeck.backend.application.ports.Users;
 import com.roamdeck.backend.domain.user.User;
+import com.roamdeck.backend.infrastructure.exceptions.EmailAlreadyExistsException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -22,6 +24,14 @@ public class JpaUsers implements Users {
 
     @Override
     public User save(User user) {
-        return userRepository.save(user);
+        try {
+            return userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+                throw new EmailAlreadyExistsException(user.getEmail());
+            }
+
+            throw e;
+        }
     }
 }
