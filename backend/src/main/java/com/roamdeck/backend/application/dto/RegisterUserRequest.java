@@ -6,12 +6,13 @@ import jakarta.validation.constraints.Size;
 
 public record RegisterUserRequest(
 
-        @Email
-        @NotBlank
+        @Email(message = "must be a well-formed email address")
+        @NotBlank(message = "must not be blank")
         String email,
 
-        @NotBlank
-        @Size(min = RegisterUserRequest.MINIMUM_PASSWORD_LENGTH)
+        @NotBlank(message = "must not be blank")
+        @Size(min = RegisterUserRequest.MINIMUM_PASSWORD_LENGTH,
+              message = "must be at least " + RegisterUserRequest.MINIMUM_PASSWORD_LENGTH + " characters")
         String password
 
 ) {
