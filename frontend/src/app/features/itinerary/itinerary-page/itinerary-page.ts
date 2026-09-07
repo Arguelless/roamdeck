@@ -1,6 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
+import { SessionService } from '../../auth/data-access/session.service';
 import { ItineraryApiService } from '../data-access/itinerary-api.service';
 import { ItineraryResponse } from '../models/itinerary-response.model';
 
@@ -13,6 +15,8 @@ import { ItineraryResponse } from '../models/itinerary-response.model';
 export class ItineraryPage {
   private readonly formBuilder = inject(FormBuilder);
   private readonly itineraryApi = inject(ItineraryApiService);
+  private readonly session = inject(SessionService);
+  private readonly router = inject(Router);
 
   protected readonly loading = signal(false);
   protected readonly result = signal<ItineraryResponse | null>(null);
@@ -25,6 +29,11 @@ export class ItineraryPage {
     budget: ['', Validators.required],
     preferences: ['']
   });
+
+  protected onLogout(): void {
+    this.session.end();
+    this.router.navigate(['/login']);
+  }
 
   protected onSubmit(): void {
     if (this.form.invalid) {

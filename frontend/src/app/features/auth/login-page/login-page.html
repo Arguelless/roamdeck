@@ -1,0 +1,62 @@
+<section class="mx-auto flex max-w-sm flex-col gap-8 p-6">
+  <h1 class="text-2xl font-semibold text-gray-900">Iniciar sesión</h1>
+
+  @if (accountCreated) {
+    <p class="rounded-md bg-green-50 px-3 py-2 text-sm text-green-800">
+      Cuenta creada. Inicia sesión para continuar.
+    </p>
+  }
+
+  @if (sessionExpired) {
+    <p class="rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-800">
+      Tu sesión ha caducado. Vuelve a iniciar sesión para continuar.
+    </p>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
+      <label for="email" class="text-sm font-medium text-gray-700">Email</label>
+      <input
+        id="email"
+        type="email"
+        autocomplete="email"
+        formControlName="email"
+        class="rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+      />
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <p class="text-sm text-red-600">Introduce un email válido.</p>
+      }
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="password" class="text-sm font-medium text-gray-700">Contraseña</label>
+      <input
+        id="password"
+        type="password"
+        autocomplete="current-password"
+        formControlName="password"
+        class="rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+      />
+      @if (form.controls.password.touched && form.controls.password.invalid) {
+        <p class="text-sm text-red-600">La contraseña es obligatoria.</p>
+      }
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="loading()"
+      class="rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+    >
+      {{ loading() ? 'Entrando…' : 'Entrar' }}
+    </button>
+  </form>
+
+  @if (error()) {
+    <p class="text-sm text-red-600">{{ error() }}</p>
+  }
+
+  <p class="text-sm text-gray-600">
+    ¿No tienes cuenta?
+    <a routerLink="/register" class="font-medium text-blue-600 hover:text-blue-700">Regístrate</a>
+  </p>
+</section>
